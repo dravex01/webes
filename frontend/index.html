@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Barczi István</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script>
+            var _table_ = document.createElement('table'),
+            _tr_ = document.createElement('tr'),
+            _th_ = document.createElement('th'),
+            _td_ = document.createElement('td');
+
+            
+            function buildHtmlTable(arr) {
+            var table = _table_.cloneNode(false),
+                columns = addAllColumnHeaders(arr, table);
+            for (var i = 0, maxi = arr.length; i < maxi; ++i) {
+                var tr = _tr_.cloneNode(false);
+                for (var j = 0, maxj = columns.length; j < maxj; ++j) {
+                var td = _td_.cloneNode(false);
+                var cellValue = arr[i][columns[j]];
+                td.appendChild(document.createTextNode(arr[i][columns[j]] || ''));
+                tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            return table;
+            }
+
+            function addAllColumnHeaders(arr, table) {
+            var columnSet = [],
+                tr = _tr_.cloneNode(false);
+            for (var i = 0, l = arr.length; i < l; i++) {
+                for (var key in arr[i]) {
+                if (arr[i].hasOwnProperty(key) && columnSet.indexOf(key) === -1) {
+                    columnSet.push(key);
+                    var th = _th_.cloneNode(false);
+                    th.appendChild(document.createTextNode(key));
+                    tr.appendChild(th);
+                }
+                }
+            }
+            table.appendChild(tr);
+            return columnSet;
+            }
+
+
+
+            $(document).ready(function(){
+                $.ajax({
+                    url:"http://localhost:5005/api/v1/Konyvek/",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(res){
+                        document.body.appendChild(buildHtmlTable(res))
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                })
+
+
+            })
+
+        </script>
+</head>
+<body>
+    
+    <h1>Webes megoldasok. Barczi Istvan</h1>
+
+</body>
+</html>
